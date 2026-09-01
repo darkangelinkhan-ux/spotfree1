@@ -1,0 +1,16 @@
+SpotFree App — Coming Soon
+===========================
+
+Thanks for your interest in the SpotFree mobile app!
+
+The native app is currently in development. In the meantime, you can book
+all Car Wash, Hospitality & Cleaning, and Subscription services right here
+on the website at every device size.
+
+Once the Android (.apk) and iOS builds are ready, replace this file at:
+  /public/downloads/spotfree-app.apk  (Android)
+  /public/downloads/spotfree-app.ipa  (iOS, if applicable)
+
+and update the Navbar's Download button href accordingly.
+
+— The SpotFree Team

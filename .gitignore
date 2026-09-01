@@ -1,0 +1,13 @@
+# Dependencies (Yeh folders automatic ban jaate hain, git ko nahi chahiye)
+node_modules/
+
+# Next.js build files
+.next/
+out/
+
+# Zip files ya archives
+*.zip
+
+# Environment variables (Jisme passwords ya secret keys hoti hain)
+.env
+.env*.local

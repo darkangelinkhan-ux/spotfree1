@@ -1,0 +1,242 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+import Navbar from '../../component/Navbar';
+import Footer from '../../component/Footer';
+
+export default function HospitalityPage() {
+  return (
+    <div className="min-h-screen bg-[#0d0d0d] text-white font-sans selection:bg-[#D4FF00] selection:text-black">
+
+      <Navbar />
+
+      {/* Hero Section */}
+      <section className="relative min-h-[75vh] flex items-center justify-center text-center pt-24 pb-16 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <Image 
+            src="/xv.png" 
+            alt="Hospitality & Cleaning Hero" 
+            fill 
+            sizes="100vw" 
+            className="object-cover scale-105" 
+            priority 
+          />
+          <div className="absolute inset-0 bg-black/30"></div>
+        </div>
+
+        <div className="max-w-4xl mx-auto w-full relative z-20 flex flex-col items-center">
+          <div className="text-xs font-bold text-neutral-300 mb-4 flex items-center justify-center gap-2">
+            <Link href="/" className="hover:text-[#D4FF00]">Home</Link> /
+            <Link href="/services" className="hover:text-[#D4FF00]">Services</Link> /
+            <span className="text-neutral-100">Hospitality & Cleaning</span>
+          </div>
+
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-none mb-6 text-white drop-shadow-md">
+              HOSPITALITY <br />
+              <span className="text-[#D4FF00]">& CLEANING</span>
+            </h1>
+            <p className="text-neutral-200 text-sm md:text-base font-medium leading-relaxed max-w-xl mx-auto drop-shadow">
+              We come to you! Professional home, villa, and office cleaning services at your location.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Bar */}
+      <section className="py-12 px-6 max-w-7xl mx-auto border-b border-neutral-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="bg-[#121212] border border-neutral-800 p-6 rounded-2xl text-center flex flex-col items-center">
+            <div className="w-10 h-10 mb-4 rounded-xl border border-[#D4FF00]/30 bg-neutral-900 flex items-center justify-center text-[#D4FF00]">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+            </div>
+            <h3 className="font-extrabold text-sm mb-1 uppercase tracking-wider">Doorstep Service</h3>
+            <p className="text-xs text-neutral-400">We come to you at your location.</p>
+          </div>
+
+          <div className="bg-[#121212] border border-neutral-800 p-6 rounded-2xl text-center flex flex-col items-center">
+            <div className="w-10 h-10 mb-4 rounded-xl border border-[#D4FF00]/30 bg-neutral-900 flex items-center justify-center text-[#D4FF00]">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path></svg>
+            </div>
+            <h3 className="font-extrabold text-sm mb-1 uppercase tracking-wider">Premium Products</h3>
+            <p className="text-xs text-neutral-400">High quality & safe cleaning products.</p>
+          </div>
+
+          <div className="bg-[#121212] border border-neutral-800 p-6 rounded-2xl text-center flex flex-col items-center">
+            <div className="w-10 h-10 mb-4 rounded-xl border border-[#D4FF00]/30 bg-neutral-900 flex items-center justify-center text-[#D4FF00]">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+            </div>
+            <h3 className="font-extrabold text-sm mb-1 uppercase tracking-wider">Expert Team</h3>
+            <p className="text-xs text-neutral-400">Trained & verified professionals.</p>
+          </div>
+
+          <div className="bg-[#121212] border border-neutral-800 p-6 rounded-2xl text-center flex flex-col items-center">
+            <div className="w-10 h-10 mb-4 rounded-xl border border-[#D4FF00]/30 bg-neutral-900 flex items-center justify-center text-[#D4FF00]">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+            </div>
+            <h3 className="font-extrabold text-sm mb-1 uppercase tracking-wider">Satisfaction</h3>
+            <p className="text-xs text-neutral-400">100% customer satisfaction.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Packages Section */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <p className="text-[#D4FF00] text-xs font-black uppercase tracking-[0.25em] mb-2">PREMIUM CLEANING CARE</p>
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Our Packages</h2>
+          <p className="text-neutral-400 text-xs mt-3">Choose the right cleaning package for your space and enjoy professional service at your doorstep.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {/* Pkg 1 */}
+          <div className="bg-[#121212] border border-neutral-800 rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <span className="inline-block bg-neutral-900 border border-neutral-800 text-xs font-black px-3 py-1 rounded-lg mb-4 text-[#D4FF00]">01</span>
+              <h3 className="text-xl font-black uppercase mb-2">Home Cleaning</h3>
+              <p className="text-xs text-neutral-400 mb-6">Professional cleaning for apartments and homes.</p>
+              <div className="text-3xl font-black text-[#D4FF00] mb-6">QAR 120</div>
+              <ul className="space-y-3 text-xs text-neutral-300 mb-8 border-t border-neutral-800 pt-6">
+                <li>✓ Dusting & Surface Wipe</li>
+                <li>✓ Floor Mopping</li>
+                <li>✓ Kitchen Cleaning</li>
+                <li>✓ Bathroom Sanitizing</li>
+                <li>✓ Trash Removal</li>
+              </ul>
+            </div>
+            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+              Book Now →
+            </Link>
+          </div>
+
+          {/* Pkg 2 */}
+          <div className="bg-[#121212] border border-neutral-800 rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <span className="inline-block bg-neutral-900 border border-neutral-800 text-xs font-black px-3 py-1 rounded-lg mb-4 text-[#D4FF00]">02</span>
+              <h3 className="text-xl font-black uppercase mb-2">Villa Cleaning</h3>
+              <p className="text-xs text-neutral-400 mb-6">Detailed cleaning for villas and larger homes.</p>
+              <div className="text-3xl font-black text-[#D4FF00] mb-6">QAR 250</div>
+              <ul className="space-y-3 text-xs text-neutral-300 mb-8 border-t border-neutral-800 pt-6">
+                <li>✓ Full Villa Deep Clean</li>
+                <li>✓ Window & Glass Cleaning</li>
+                <li>✓ Multi-Room Coverage</li>
+                <li>✓ Outdoor Area Wipe Down</li>
+                <li>✓ Kitchen & Bathrooms</li>
+              </ul>
+            </div>
+            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+              Book Now →
+            </Link>
+          </div>
+
+          {/* Pkg 3 */}
+          <div className="bg-[#121212] border border-neutral-800 rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <span className="inline-block bg-neutral-900 border border-neutral-800 text-xs font-black px-3 py-1 rounded-lg mb-4 text-[#D4FF00]">03</span>
+              <h3 className="text-xl font-black uppercase mb-2">Office Cleaning</h3>
+              <p className="text-xs text-neutral-400 mb-6">Reliable cleaning for professional spaces.</p>
+              <div className="text-3xl font-black text-[#D4FF00] mb-6">QAR 180</div>
+              <ul className="space-y-3 text-xs text-neutral-300 mb-8 border-t border-neutral-800 pt-6">
+                <li>✓ Workstation Cleaning</li>
+                <li>✓ Common Area Sanitizing</li>
+                <li>✓ Floor Care</li>
+                <li>✓ Restroom Cleaning</li>
+                <li>✓ Waste Disposal</li>
+              </ul>
+            </div>
+            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+              Book Now →
+            </Link>
+          </div>
+
+          {/* Pkg 4 */}
+          <div className="bg-[#121212] border border-neutral-800 rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <span className="inline-block bg-neutral-900 border border-neutral-800 text-xs font-black px-3 py-1 rounded-lg mb-4 text-[#D4FF00]">04</span>
+              <h3 className="text-xl font-black uppercase mb-2">Deep Cleaning</h3>
+              <p className="text-xs text-neutral-400 mb-6">Complete deep cleaning for a spotless space.</p>
+              <div className="text-3xl font-black text-[#D4FF00] mb-6">QAR 220</div>
+              <ul className="space-y-3 text-xs text-neutral-300 mb-8 border-t border-neutral-800 pt-6">
+                <li>✓ Deep Sanitization</li>
+                <li>✓ Behind-Appliance Cleaning</li>
+                <li>✓ Grout & Tile Detailing</li>
+                <li>✓ Upholstery Refresh</li>
+                <li>✓ Premium Finish</li>
+              </ul>
+            </div>
+            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+              Book Now →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-xs font-black uppercase tracking-[0.25em] text-[#D4FF00]">GALLERY</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="relative h-48 rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900">
+            <Image 
+              src="/xv.png" 
+              alt="Gallery 1" 
+              fill 
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" 
+              className="object-cover hover:scale-105 transition duration-500" 
+            />
+          </div>
+          <div className="relative h-48 rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900">
+            <Image 
+              src="/xv.png" 
+              alt="Gallery 2" 
+              fill 
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" 
+              className="object-cover hover:scale-105 transition duration-500" 
+            />
+          </div>
+          <div className="relative h-48 rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900">
+            <Image 
+              src="/xv.png" 
+              alt="Gallery 3" 
+              fill 
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" 
+              className="object-cover hover:scale-105 transition duration-500" 
+            />
+          </div>
+          <div className="relative h-48 rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900">
+            <Image 
+              src="/xv.png" 
+              alt="Gallery 4" 
+              fill 
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" 
+              className="object-cover hover:scale-105 transition duration-500" 
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Ready When You Are CTA Section */}
+      <section className="py-12 px-6 max-w-7xl mx-auto mb-16">
+        <div className="bg-[#121212] border border-neutral-800 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-[#D4FF00] text-[10px] font-black uppercase tracking-[0.25em] mb-2">READY WHEN YOU ARE</p>
+            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-2">Ready for a spotless space?</h3>
+            <p className="text-neutral-400 text-xs">Book your slot now and we&apos;ll come to you.</p>
+          </div>
+          <Link
+            href="/booking"
+            className="bg-[#D4FF00] hover:bg-[#bce400] text-black font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition shadow-lg shadow-[#D4FF00]/15 whitespace-nowrap"
+          >
+            Book Now →
+          </Link>
+        </div>
+      </section>
+
+      <Footer />
+
+    </div>
+  );
+}
