@@ -23,7 +23,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const resend = new Resend("re_L9UqnHH1_4Dy4wjA5fHmss6QbgbrJNbxo");
+    // Updated with the new working API key
+    const resend = new Resend("re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'SpotFree <onboarding@resend.dev>',
-      to: 'developerm789@gmail.com', // Safe hardcoded recipient
+      to: 'developerm789@gmail.com',
       replyTo: email,
       subject: `New Subscription / Signup${plan ? ` — ${plan}` : ''}`,
       html: emailShell({

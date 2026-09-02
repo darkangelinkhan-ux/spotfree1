@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { FROM_EMAIL, emailShell, emailRow } from '@/lib/email';
-// Not using NOTIFICATION_EMAIL directly if it's unconfigured, or use a safe fallback below
+import { emailShell, emailRow } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,12 +11,12 @@ export async function POST(request: Request) {
 
     if (!name || !email || !message) {
       return NextResponse.json(
-        { success: false, error: 'Missing required fields (name, email, message).' },
+        { success: false, error: 'Missing required fields.' },
         { status: 400 }
       );
     }
 
-    const resend = new Resend("re_L9UqnHH1_4Dy4wjA5fHmss6QbgbrJNbxo");
+    const resend = new Resend("re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'SpotFree <onboarding@resend.dev>',
-      to: 'developerm789@gmail.com', // Safe hardcoded destination to prevent undefined errors
+      to: 'developerm789@gmail.com',
       replyTo: email,
       subject: `Contact Message: ${subject || 'New Inquiry'}`,
       html: emailShell({
@@ -45,14 +44,14 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error('Resend error (contact):', error);
-      return NextResponse.json({ success: false, error: error.message || 'Failed to send message.' }, { status: 502 });
+      console.error('Resend error:', error);
+      return NextResponse.json({ success: false, error: error.message }, { status: 502 });
     }
 
     return NextResponse.json({ success: true, message: 'Message sent successfully.', data }, { status: 200 });
   } catch (error) {
-    console.error('Contact API error:', error);
-    const message = error instanceof Error ? error.message : 'Failed to process message.';
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    console.error('API error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to process message.';
+    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
   }
 }
