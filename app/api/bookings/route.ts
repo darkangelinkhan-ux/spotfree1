@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-import { NOTIFICATION_EMAIL, FROM_EMAIL, emailShell, emailRow } from '@/lib/email';
+import { emailShell, emailRow } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +17,7 @@ interface BookingPayload {
   paymentMethod: 'cod' | 'card' | string;
   orderId?: string;
   isRecurring?: boolean;
-  recurringFrequency?: string; // e.g. 'Weekly', 'Bi-Weekly', 'Monthly'
+  recurringFrequency?: string;
 }
 
 const REQUIRED_FIELDS: (keyof BookingPayload)[] = [
@@ -69,8 +68,6 @@ export async function POST(request: Request) {
 
     const paymentLabel = paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : 'Online Card Payment';
 
-    const resend = new Resend("re_L9UqnHH1_4Dy4wjA5fHmss6QbgbrJNbxo");
-
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
         ${orderId ? emailRow('Reference ID', orderId) : ''}
@@ -93,22 +90,32 @@ export async function POST(request: Request) {
       </ul>
     `;
 
-    const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: NOTIFICATION_EMAIL,
-      replyTo: email,
-      subject: `New Booking: ${service} (${pkgName})${isRecurring ? ' — Recurring' : ''}`,
-      html: emailShell({
-        eyebrow: 'New Booking Received',
-        title: `${service} — ${pkgName}`,
-        intro: 'A customer just confirmed a booking on SpotFree. Full details below.',
-        bodyHtml,
+    // Direct Resend API fetch call to bypass environment variable errors
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer re_L9UqnHH1_4Dy4wjA5fHmss6QbgbrJNbxo`,
+      },
+      body: JSON.stringify({
+        from: 'SpotFree <onboarding@resend.dev>',
+        to: ['developerm789@gmail.com'],
+        reply_to: email,
+        subject: `New Booking: ${service} (${pkgName})${isRecurring ? ' — Recurring' : ''}`,
+        html: emailShell({
+          eyebrow: 'New Booking Received',
+          title: `${service} — ${pkgName}`,
+          intro: 'A customer just confirmed a booking on SpotFree. Full details below.',
+          bodyHtml,
+        }),
       }),
     });
 
-    if (error) {
-      console.error('Resend error (bookings):', error);
-      return NextResponse.json({ success: false, error: 'Failed to send booking email.' }, { status: 502 });
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error('Resend API error (bookings):', data);
+      return NextResponse.json({ success: false, error: data.message || 'Failed to send booking email.' }, { status: 502 });
     }
 
     return NextResponse.json({ success: true, message: 'Booking email sent successfully.', data }, { status: 200 });

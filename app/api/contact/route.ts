@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { NOTIFICATION_EMAIL, FROM_EMAIL, emailShell, emailRow } from '@/lib/email';
+import { FROM_EMAIL, emailShell, emailRow } from '@/lib/email';
+// Not using NOTIFICATION_EMAIL directly if it's unconfigured, or use a safe fallback below
 
 export const dynamic = 'force-dynamic';
 
@@ -31,8 +32,8 @@ export async function POST(request: Request) {
     `;
 
     const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: NOTIFICATION_EMAIL,
+      from: 'SpotFree <onboarding@resend.dev>',
+      to: 'developerm789@gmail.com', // Safe hardcoded destination to prevent undefined errors
       replyTo: email,
       subject: `Contact Message: ${subject || 'New Inquiry'}`,
       html: emailShell({
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Resend error (contact):', error);
-      return NextResponse.json({ success: false, error: 'Failed to send message.' }, { status: 502 });
+      return NextResponse.json({ success: false, error: error.message || 'Failed to send message.' }, { status: 502 });
     }
 
     return NextResponse.json({ success: true, message: 'Message sent successfully.', data }, { status: 200 });

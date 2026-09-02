@@ -1,7 +1,6 @@
-// app/api/subscription/route.ts
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { NOTIFICATION_EMAIL, FROM_EMAIL, emailShell, emailRow } from '@/lib/email';
+import { emailShell, emailRow } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,7 +23,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY || "re_L9UqnHH1_4Dy4wjA5fHmss6QbgbrJNbxo");
+    const resend = new Resend("re_L9UqnHH1_4Dy4wjA5fHmss6QbgbrJNbxo");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -42,8 +41,8 @@ export async function POST(request: Request) {
     `;
 
     const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: NOTIFICATION_EMAIL,
+      from: 'SpotFree <onboarding@resend.dev>',
+      to: 'developerm789@gmail.com', // Safe hardcoded recipient
       replyTo: email,
       subject: `New Subscription / Signup${plan ? ` — ${plan}` : ''}`,
       html: emailShell({
