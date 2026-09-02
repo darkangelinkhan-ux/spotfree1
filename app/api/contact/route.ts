@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { emailShell, emailRow } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
@@ -10,13 +9,8 @@ export async function POST(request: Request) {
     const { name, email, subject, message } = body;
 
     if (!name || !email || !message) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required fields.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Missing required fields.' }, { status: 400 });
     }
-
-    const resend = new Resend(process.env.RESEND_API_KEY || "re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -30,28 +24,36 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    const { data, error } = await resend.emails.send({
-      from: 'SpotFree <onboarding@resend.dev>',
-      to: 'developerm789@gmail.com',
-      replyTo: email,
-      subject: `Contact Message: ${subject || 'New Inquiry'}`,
-      html: emailShell({
-        eyebrow: 'New Contact Message',
-        title: name,
-        intro: 'You received a new message from the SpotFree contact form.',
-        bodyHtml,
+    // Direct fetch use kiya hai taaki koi library error na aaye
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc`,
+      },
+      body: JSON.stringify({
+        from: 'SpotFree <onboarding@resend.dev>',
+        to: ['developerm789@gmail.com'],
+        reply_to: email,
+        subject: `Contact Message: ${subject || 'New Inquiry'}`,
+        html: emailShell({
+          eyebrow: 'New Contact Message',
+          title: name,
+          intro: 'You received a new message from the SpotFree contact form.',
+          bodyHtml,
+        }),
       }),
     });
 
-    if (error) {
-      console.error('Resend error:', error);
-      return NextResponse.json({ success: false, error: error.message }, { status: 502 });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('Resend error:', data);
+      return NextResponse.json({ success: false, error: data.message || 'Failed to send' }, { status: 502 });
     }
 
     return NextResponse.json({ success: true, message: 'Message sent successfully.', data }, { status: 200 });
   } catch (error) {
     console.error('API error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to process message.';
-    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Failed to process message.' }, { status: 500 });
   }
 }

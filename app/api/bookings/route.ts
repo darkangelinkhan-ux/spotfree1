@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { emailShell, emailRow } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
@@ -7,7 +6,6 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
     const {
       service,
       package: pkgName,
@@ -26,14 +24,10 @@ export async function POST(request: Request) {
     } = body;
 
     if (!email || !fullName || !service) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required booking fields.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Missing required booking fields.' }, { status: 400 });
     }
 
     const paymentLabel = paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : 'Online Card Payment';
-   const resend = new Resend(process.env.RESEND_API_KEY || "re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -49,36 +43,39 @@ export async function POST(request: Request) {
         ${emailRow('Address', address)}
         ${instructions ? emailRow('Instructions', instructions) : ''}
         ${emailRow('Payment Method', paymentLabel)}
-        ${
-          isRecurring
-            ? emailRow('Subscription', `Recurring &mdash; ${recurringFrequency || 'Not specified'}`)
-            : emailRow('Subscription', 'One-time booking')
-        }
+        ${isRecurring ? emailRow('Subscription', `Recurring &mdash; ${recurringFrequency || 'Not specified'}`) : emailRow('Subscription', 'One-time booking')}
       </ul>
     `;
 
-    const { data, error } = await resend.emails.send({
-      from: 'SpotFree <onboarding@resend.dev>',
-      to: 'developerm789@gmail.com',
-      replyTo: email,
-      subject: `New Booking: ${service} (${pkgName})${isRecurring ? ' — Recurring' : ''}`,
-      html: emailShell({
-        eyebrow: 'New Booking Received',
-        title: `${service} — ${pkgName}`,
-        intro: 'A customer just confirmed a booking on SpotFree. Full details below.',
-        bodyHtml,
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc`,
+      },
+      body: JSON.stringify({
+        from: 'SpotFree <onboarding@resend.dev>',
+        to: ['developerm789@gmail.com'],
+        reply_to: email,
+        subject: `New Booking: ${service} (${pkgName})${isRecurring ? ' — Recurring' : ''}`,
+        html: emailShell({
+          eyebrow: 'New Booking Received',
+          title: `${service} — ${pkgName}`,
+          intro: 'A customer just confirmed a booking on SpotFree. Full details below.',
+          bodyHtml,
+        }),
       }),
     });
 
-    if (error) {
-      console.error('Resend error (bookings):', error);
-      return NextResponse.json({ success: false, error: error.message }, { status: 502 });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('Resend error:', data);
+      return NextResponse.json({ success: false, error: data.message || 'Failed to send booking' }, { status: 502 });
     }
 
     return NextResponse.json({ success: true, message: 'Booking email sent successfully.', data }, { status: 200 });
   } catch (error) {
     console.error('Bookings API error:', error);
-    const message = error instanceof Error ? error.message : 'Failed to process booking.';
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Failed to process booking.' }, { status: 500 });
   }
 }

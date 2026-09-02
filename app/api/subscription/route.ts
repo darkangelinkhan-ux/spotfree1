@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { emailShell, emailRow } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
@@ -7,24 +6,14 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log("API Received Body:", body);
-
-    // Frontend se 'email' aaye ya 'customerEmail', dono ko handle karega
     const email = body.email || body.customerEmail;
     const name = body.name || body.customerName;
     const phone = body.phone || body.customerPhone;
     const { plan, price, frequency, startDate, preferredTime, vehicleCount, vehicleType } = body;
 
     if (!email) {
-      console.error("Validation failed: 'email' field is missing or empty in body:", body);
-      return NextResponse.json(
-        { success: false, error: 'Email is required.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Email is required.' }, { status: 400 });
     }
-
-    // Updated with the new working API key
-    const resend = new Resend(process.env.RESEND_API_KEY || "re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -41,28 +30,35 @@ export async function POST(request: Request) {
       </ul>
     `;
 
-    const { data, error } = await resend.emails.send({
-      from: 'SpotFree <onboarding@resend.dev>',
-      to: 'developerm789@gmail.com',
-      replyTo: email,
-      subject: `New Subscription / Signup${plan ? ` — ${plan}` : ''}`,
-      html: emailShell({
-        eyebrow: 'New Subscription',
-        title: plan || 'Newsletter / Plan Signup',
-        intro: 'A user subscribed or registered on SpotFree.',
-        bodyHtml,
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc`,
+      },
+      body: JSON.stringify({
+        from: 'SpotFree <onboarding@resend.dev>',
+        to: ['developerm789@gmail.com'],
+        reply_to: email,
+        subject: `New Subscription / Signup${plan ? ` — ${plan}` : ''}`,
+        html: emailShell({
+          eyebrow: 'New Subscription',
+          title: plan || 'Newsletter / Plan Signup',
+          intro: 'A user subscribed or registered on SpotFree.',
+          bodyHtml,
+        }),
       }),
     });
 
-    if (error) {
-      console.error('Resend error (subscription):', error);
-      return NextResponse.json({ success: false, error: error.message || 'Failed to process subscription.' }, { status: 502 });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('Resend error:', data);
+      return NextResponse.json({ success: false, error: data.message || 'Failed to send subscription' }, { status: 502 });
     }
 
     return NextResponse.json({ success: true, message: 'Subscription processed successfully.', data }, { status: 200 });
   } catch (error) {
     console.error('Subscription API error:', error);
-    const message = error instanceof Error ? error.message : 'Failed to process subscription.';
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Failed to process subscription.' }, { status: 500 });
   }
 }
