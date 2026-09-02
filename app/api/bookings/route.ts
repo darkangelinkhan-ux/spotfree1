@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
     const paymentLabel = paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : 'Online Card Payment';
 
-    const resend = new Resend("re_7bLuXxeD_Mt9Ly7oSJYvXvyv5Gn9TLRKa");
+   const resend = new Resend(process.env.RESEND_API_KEY);
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
