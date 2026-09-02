@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     // Updated with the new working API key
-    const resend = new Resend("re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
+    const resend = new Resend(process.env.RESEND_API_KEY || "re_Gipd5GwR_9z37YGWBGcKZnt4HxqtjVDEc");
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
