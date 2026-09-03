@@ -7,6 +7,8 @@ export const dynamic = 'force-dynamic';
 interface BookingPayload {
   service: string;
   package: string;
+  vehicleType?: string;
+  vehicleQuantity?: string;
   price: string | number;
   date: string;
   time: string;
@@ -14,11 +16,16 @@ interface BookingPayload {
   phone: string;
   email: string;
   address: string;
+  houseNo?: string;
+  building?: string;
+  unit?: string;
+  street?: string;
+  zone?: string;
   instructions?: string;
   paymentMethod: 'cod' | 'card' | string;
   orderId?: string;
   isRecurring?: boolean;
-  recurringFrequency?: string; // e.g. 'Weekly', 'Bi-Weekly', 'Monthly'
+  recurringFrequency?: string;
 }
 
 const REQUIRED_FIELDS: (keyof BookingPayload)[] = [
@@ -30,7 +37,6 @@ const REQUIRED_FIELDS: (keyof BookingPayload)[] = [
   'fullName',
   'phone',
   'email',
-  'address',
   'paymentMethod',
 ];
 
@@ -53,6 +59,8 @@ export async function POST(request: Request) {
     const {
       service,
       package: pkgName,
+      vehicleType,
+      vehicleQuantity,
       price,
       date,
       time,
@@ -60,6 +68,11 @@ export async function POST(request: Request) {
       phone,
       email,
       address,
+      houseNo,
+      building,
+      unit,
+      street,
+      zone,
       instructions,
       paymentMethod,
       orderId,
@@ -67,9 +80,8 @@ export async function POST(request: Request) {
       recurringFrequency,
     } = body as BookingPayload;
 
-    const paymentLabel = paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : 'Online Card Payment';
-
-   const resend = new Resend(process.env.RESEND_API_KEY);
+    const paymentLabel = paymentMethod === 'cod' ? 'Cash on Arrival (COD)' : 'Online Card Payment';
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const bodyHtml = `
       <ul style="margin:0;padding:0;">
@@ -79,10 +91,18 @@ export async function POST(request: Request) {
         ${emailRow('Email', email)}
         ${emailRow('Service', service)}
         ${emailRow('Package', pkgName)}
+        ${vehicleType ? emailRow('Vehicle Details', `${vehicleType} (${vehicleQuantity || '1'} Vehicle)`) : ''}
         ${emailRow('Price', `QAR ${price}`)}
         ${emailRow('Date', date)}
         ${emailRow('Time', time)}
-        ${emailRow('Address', address)}
+        
+        ${address ? emailRow('Service Address', address) : ''}
+        ${houseNo ? emailRow('House / Flat No', houseNo) : ''}
+        ${building ? emailRow('Building / Complex', building) : ''}
+        ${unit ? emailRow('Unit / Floor', unit) : ''}
+        ${street ? emailRow('Street Name', street) : ''}
+        ${zone ? emailRow('Zone Number', zone) : ''}
+
         ${instructions ? emailRow('Instructions', instructions) : ''}
         ${emailRow('Payment Method', paymentLabel)}
         ${

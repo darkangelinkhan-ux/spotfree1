@@ -11,12 +11,20 @@ export default function BookingPage() {
   // State management for interactive booking form
   const [selectedService, setSelectedService] = useState('Car Wash & Detailing');
   const [selectedPackage, setSelectedPackage] = useState('Exterior Wash');
-  const [vehicleType, setVehicleType] = useState(''); // <-- Alag state vehicle type ke liye
-  const [vehicleQuantity, setVehicleQuantity] = useState('1'); // <-- Alag state quantity ke liye
+  const [vehicleType, setVehicleType] = useState('');
+  const [vehicleQuantity, setVehicleQuantity] = useState('1');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [address, setAddress] = useState('');
+  
+  // Specific location fields states (For Hospitality & Cleaning)
+  const [houseNo, setHouseNo] = useState('');
+  const [building, setBuilding] = useState('');
+  const [unit, setUnit] = useState('');
+  const [street, setStreet] = useState('');
+  const [zone, setZone] = useState('');
+
   const [instructions, setInstructions] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -93,7 +101,13 @@ export default function BookingPage() {
     e.preventDefault();
 
     if (!fullName || !phone || !email || !date || !time || !address) {
-      alert('Baraye meherbani saari required fields fill karein!');
+      alert('Baraye meherbani saari required details fields fill karein!');
+      return;
+    }
+
+    // Validation for Hospitality specific fields
+    if (selectedService === 'Hospitality & Cleaning' && (!houseNo || !street || !zone)) {
+      alert('Baraye meherbani hospitality service ke liye House/Flat No, Street, aur Zone enter karein!');
       return;
     }
 
@@ -106,7 +120,7 @@ export default function BookingPage() {
 
     const price = getSelectedPrice();
 
-    // Construct URL query parameters to pass booking details to checkout page
+    // Construct URL query parameters
     const queryParams = new URLSearchParams({
       service: selectedService,
       package: selectedPackage,
@@ -118,6 +132,13 @@ export default function BookingPage() {
       date: date,
       time: time,
       address: address,
+      ...(selectedService === 'Hospitality & Cleaning' && {
+        houseNo: houseNo,
+        building: building,
+        unit: unit,
+        street: street,
+        zone: zone,
+      }),
       instructions: instructions,
       fullName: fullName,
       phone: phone,
@@ -126,7 +147,6 @@ export default function BookingPage() {
       recurringFrequency: isRecurring ? recurringFrequency : '',
     });
 
-    // Redirect to Checkout Page
     router.push(`/checkout?${queryParams.toString()}`);
   };
 
@@ -362,7 +382,7 @@ export default function BookingPage() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Address / Building / Villa</label>
+                <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Address / Building / Villa (General)</label>
                 <input
                   type="text"
                   placeholder="Enter your complete address or use GPS button above"
@@ -372,6 +392,72 @@ export default function BookingPage() {
                   required
                 />
               </div>
+
+              {/* Detailed Location Fields (Only shows if Hospitality & Cleaning is selected) */}
+              {selectedService === 'Hospitality & Cleaning' && (
+                <div className="space-y-4 pt-2 border-t border-neutral-800">
+                  <p className="text-xs font-bold text-[#D4FF00] uppercase tracking-wider">Detailed Address Information</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">House / Flat No *</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Villa 14 or Flat 402"
+                        value={houseNo}
+                        onChange={(e) => setHouseNo(e.target.value)}
+                        className="w-full bg-[#161616] border border-neutral-800 rounded-xl px-4 py-3.5 text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#D4FF00] transition"
+                        required={selectedService === 'Hospitality & Cleaning'}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Building / Complex</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Al Saad Tower"
+                        value={building}
+                        onChange={(e) => setBuilding(e.target.value)}
+                        className="w-full bg-[#161616] border border-neutral-800 rounded-xl px-4 py-3.5 text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#D4FF00] transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Unit / Floor</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 4th Floor"
+                        value={unit}
+                        onChange={(e) => setUnit(e.target.value)}
+                        className="w-full bg-[#161616] border border-neutral-800 rounded-xl px-4 py-3.5 text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#D4FF00] transition"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Street Name *</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Grand Hamad Street"
+                        value={street}
+                        onChange={(e) => setStreet(e.target.value)}
+                        className="w-full bg-[#161616] border border-neutral-800 rounded-xl px-4 py-3.5 text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#D4FF00] transition"
+                        required={selectedService === 'Hospitality & Cleaning'}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Zone Number *</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Zone 25"
+                        value={zone}
+                        onChange={(e) => setZone(e.target.value)}
+                        className="w-full bg-[#161616] border border-neutral-800 rounded-xl px-4 py-3.5 text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-[#D4FF00] transition"
+                        required={selectedService === 'Hospitality & Cleaning'}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Additional Instructions</label>

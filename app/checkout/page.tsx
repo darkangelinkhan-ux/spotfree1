@@ -25,11 +25,16 @@ function CheckoutContent() {
   const [date] = useState(() => searchParams.get('date') || 'Today');
   const [time] = useState(() => searchParams.get('time') || 'ASAP');
 
-  // Customer details, carried over from the booking form via query params
+  // Customer details & separate location fields
   const [fullName] = useState(() => searchParams.get('fullName') || '');
   const [phone] = useState(() => searchParams.get('phone') || '');
   const [email] = useState(() => searchParams.get('email') || '');
   const [address] = useState(() => searchParams.get('address') || '');
+  const [houseNo] = useState(() => searchParams.get('houseNo') || '');
+  const [building] = useState(() => searchParams.get('building') || '');
+  const [unit] = useState(() => searchParams.get('unit') || '');
+  const [street] = useState(() => searchParams.get('street') || '');
+  const [zone] = useState(() => searchParams.get('zone') || '');
   const [instructions] = useState(() => searchParams.get('instructions') || '');
 
   // Subscription / recurring details
@@ -80,6 +85,11 @@ function CheckoutContent() {
           phone,
           email,
           address,
+          houseNo,
+          building,
+          unit,
+          street,
+          zone,
           instructions,
           paymentMethod,
           orderId: randomId,
@@ -159,6 +169,44 @@ function CheckoutContent() {
                 </div>
               )}
 
+              {/* Complete Independent Location Fields in Success Screen */}
+              {address && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                  <span className="text-neutral-400">Address:</span>
+                  <span className="font-bold text-white text-right">{address}</span>
+                </div>
+              )}
+              {houseNo && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                  <span className="text-neutral-400">House / Flat No:</span>
+                  <span className="font-bold text-white">{houseNo}</span>
+                </div>
+              )}
+              {building && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                  <span className="text-neutral-400">Building / Complex:</span>
+                  <span className="font-bold text-white">{building}</span>
+                </div>
+              )}
+              {unit && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                  <span className="text-neutral-400">Unit / Floor:</span>
+                  <span className="font-bold text-white">{unit}</span>
+                </div>
+              )}
+              {street && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                  <span className="text-neutral-400">Street Name:</span>
+                  <span className="font-bold text-white">{street}</span>
+                </div>
+              )}
+              {zone && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                  <span className="text-neutral-400">Zone Number:</span>
+                  <span className="font-bold text-white">{zone}</span>
+                </div>
+              )}
+
               <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
                 <span className="text-neutral-400">Total Price:</span>
                 <span className="font-bold text-[#D4FF00]">QAR {price}</span>
@@ -219,6 +267,44 @@ function CheckoutContent() {
                   <span className="font-bold text-right">
                     {vehicleType} <span className="text-[#D4FF00]">({vehicleQuantity} Vehicle{Number(vehicleQuantity) > 1 ? 's' : ''})</span>
                   </span>
+                </div>
+              )}
+
+              {/* Complete Independent Location Fields in Summary Card */}
+              {address && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-3">
+                  <span className="text-neutral-400">Service Address</span>
+                  <span className="font-bold text-right text-neutral-300">{address}</span>
+                </div>
+              )}
+              {houseNo && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-3">
+                  <span className="text-neutral-400">House / Flat No</span>
+                  <span className="font-bold text-white">{houseNo}</span>
+                </div>
+              )}
+              {building && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-3">
+                  <span className="text-neutral-400">Building / Complex</span>
+                  <span className="font-bold text-white">{building}</span>
+                </div>
+              )}
+              {unit && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-3">
+                  <span className="text-neutral-400">Unit / Floor</span>
+                  <span className="font-bold text-white">{unit}</span>
+                </div>
+              )}
+              {street && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-3">
+                  <span className="text-neutral-400">Street Name</span>
+                  <span className="font-bold text-white">{street}</span>
+                </div>
+              )}
+              {zone && (
+                <div className="flex justify-between text-xs border-b border-neutral-800 pb-3">
+                  <span className="text-neutral-400">Zone Number</span>
+                  <span className="font-bold text-white">{zone}</span>
                 </div>
               )}
 
