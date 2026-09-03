@@ -100,8 +100,7 @@ export default function CarWashPage() {
                 <li>✓ Quick Dry</li>
               </ul>
             </div>
-            {/* Updated link to /booking */}
-            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+            <Link href="/booking?service=Car%20Wash%20%26%20Detailing&package=Exterior%20Wash&price=79" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
               Book Now →
             </Link>
           </div>
@@ -121,8 +120,7 @@ export default function CarWashPage() {
                 <li>✓ Windows Cleaning</li>
               </ul>
             </div>
-            {/* Updated link to /booking */}
-            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+            <Link href="/booking?service=Car%20Wash%20%26%20Detailing&package=Interior&price=149" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
               Book Now →
             </Link>
           </div>
@@ -142,8 +140,7 @@ export default function CarWashPage() {
                 <li>✓ Tire & Rim Detail</li>
               </ul>
             </div>
-            {/* Updated link to /booking */}
-            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+            <Link href="/booking?service=Car%20Wash%20%26%20Detailing&package=Full%20Detail&price=299" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
               Book Now →
             </Link>
           </div>
@@ -163,8 +160,7 @@ export default function CarWashPage() {
                 <li>✓ Premium Finish</li>
               </ul>
             </div>
-            {/* Updated link to /booking */}
-            <Link href="/booking" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+            <Link href="/booking?service=Car%20Wash%20%26%20Detailing&package=Paint%20Polish&price=499" className="w-full text-center bg-transparent border border-[#D4FF00] hover:bg-[#D4FF00] hover:text-black text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl transition">
               Book Now →
             </Link>
           </div>
@@ -200,9 +196,8 @@ export default function CarWashPage() {
             <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-2">Ready to make your car shine?</h3>
             <p className="text-neutral-400 text-xs">Book your slot now and we&apos;ll come to you.</p>
           </div>
-          {/* Updated link to /booking */}
           <Link
-            href="/booking"
+            href="/booking?service=Car%20Wash%20%26%20Detailing&package=Exterior%20Wash&price=79"
             className="bg-[#D4FF00] hover:bg-[#bce400] text-black font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition shadow-lg shadow-[#D4FF00]/15 whitespace-nowrap"
           >
             Book Now →
