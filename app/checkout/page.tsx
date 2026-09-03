@@ -14,7 +14,14 @@ function CheckoutContent() {
   const [pkg] = useState(() => searchParams.get('package') || 'Exterior Wash');
   const [vehicleType] = useState(() => searchParams.get('vehicleType') || '');
   const [vehicleQuantity] = useState(() => searchParams.get('vehicleQuantity') || '1');
-  const [price] = useState(() => searchParams.get('price') || '60');
+  
+  // Automatically calculate total price based on quantity
+  const [price] = useState(() => {
+    const rawPrice = Number(searchParams.get('price') || '60');
+    const qty = Number(searchParams.get('vehicleQuantity') || '1');
+    return (rawPrice * qty).toString();
+  });
+
   const [date] = useState(() => searchParams.get('date') || 'Today');
   const [time] = useState(() => searchParams.get('time') || 'ASAP');
 
@@ -151,6 +158,11 @@ function CheckoutContent() {
                   </span>
                 </div>
               )}
+
+              <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
+                <span className="text-neutral-400">Total Price:</span>
+                <span className="font-bold text-[#D4FF00]">QAR {price}</span>
+              </div>
 
               <div className="flex justify-between text-xs border-b border-neutral-800 pb-2">
                 <span className="text-neutral-400">Payment Mode:</span>
